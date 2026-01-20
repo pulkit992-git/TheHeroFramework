@@ -12,6 +12,8 @@ class UCameraComponent;
 class UInputAction;
 struct FInputActionValue;
 
+class UAttributeComponent;
+
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 /**
@@ -53,6 +55,9 @@ public:
 
 	/** Constructor */
 	ATheHeroFrameworkCharacter();	
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UAttributeComponent* AttributeComp;
 
 protected:
 
