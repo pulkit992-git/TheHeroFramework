@@ -52,6 +52,15 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* MouseLookAction;
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* InteractAction;
+
+	// function which will be bind with the input
+	void PrimaryInteract();
+
+	UPROPERTY(EditAnywhere, Category = "Interaction")
+	float InteractionRange = 600.0f;
+
 public:
 
 	/** Constructor */

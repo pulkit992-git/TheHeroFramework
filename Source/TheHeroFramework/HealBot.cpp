@@ -3,12 +3,13 @@
 
 #include "HealBot.h"
 #include "GameplayInterface.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AHealBot::AHealBot()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -26,6 +27,12 @@ void AHealBot::Tick(float DeltaTime)
 
 }
 
+void AHealBot::Interact_Implementation(AActor* ActorToInteractWith)
+{
+	UE_LOG(LogTemp, Warning, TEXT("HealBot says: You interacted with me!"));
+}
+
+/*
 void AHealBot::TriggerInteract(AActor* ActorToInteractWith)
 {
 	// checks if the actor has the interface and call the function safely
@@ -33,5 +40,5 @@ void AHealBot::TriggerInteract(AActor* ActorToInteractWith)
 	{
 		IGameplayInterface::Execute_Interact(ActorToInteractWith, this);
 	}
-}
+} */
 

@@ -5,7 +5,3 @@
 
 // Add default functionality here for any IGameplayInterface functions that are not pure virtual.
 
-void UGameplayInterface::Interact(AActor* Instigator)
-{
-
-}

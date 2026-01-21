@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameplayInterface.h"
 #include "HealBot.generated.h"
 
 UCLASS()
-class THEHEROFRAMEWORK_API AHealBot : public AActor
+class THEHEROFRAMEWORK_API AHealBot : public AActor, public IGameplayInterface
 {
 	GENERATED_BODY()
 	
@@ -19,13 +20,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY (VisibleAnywhere)
-	UStaticMeshComponent* MeshComp;
-
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void TriggerInteract(AActor* ActorToInteractWith);
-
+	virtual void Interact_Implementation(AActor* ActorToInteractWith) override;
 };

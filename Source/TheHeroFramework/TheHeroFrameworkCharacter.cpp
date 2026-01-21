@@ -12,6 +12,45 @@
 #include "InputActionValue.h"
 #include "TheHeroFramework.h"
 #include "AttributeComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "DrawDebugHelpers.h"
+
+void ATheHeroFrameworkCharacter::PrimaryInteract()
+{
+	// Defining start and end position of the raycast
+	FVector EyeLocation;
+	FRotator EyeRotatoin;
+
+	// Get the camera's location and rotation
+	GetActorEyesViewPoint(EyeLocation, EyeRotatoin);
+
+	FVector End = EyeLocation + (EyeRotatoin.Vector() * InteractionRange);
+
+	// setup collision parameter
+	FHitResult hit;
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this); // avoiding hitting yourself
+
+	// Perform the line trace
+	bool bBlockHit = GetWorld()->LineTraceSingleByChannel(hit, EyeLocation, End, ECC_Visibility, QueryParams);
+
+	// visualize the eye in the editor
+	FColor LineColor = bBlockHit ? FColor::Green : FColor::Red;
+	DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0, 2.0f);
+
+	if (bBlockHit)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("1"));
+		AActor* HitActor = hit.GetActor();
+		if (HitActor && HitActor->Implements<UGameplayInterface>())
+		{
+			UE_LOG(LogTemp, Warning, TEXT ("Interaction"));
+
+			// Trigger the interface
+			IGameplayInterface::Execute_Interact(HitActor, this);
+		}
+	}
+}
 
 ATheHeroFrameworkCharacter::ATheHeroFrameworkCharacter()
 {
@@ -54,11 +93,11 @@ ATheHeroFrameworkCharacter::ATheHeroFrameworkCharacter()
 	AttributeComp = CreateDefaultSubobject<UAttributeComponent>(TEXT("AttributeComp"));
 }
 
-void ATheHeroFrameworkCharacter::Interact_Implementation(AActor* Instigator)
+void ATheHeroFrameworkCharacter::Interact_Implementation(AActor* InstigatorActor)
 {
 	if (AttributeComp)
 	{
-		AttributeComp->ApplyHealthChange(10.0f, Instigator);
+		AttributeComp->ApplyHealthChange(10.0f, InstigatorActor);
 
 		UE_LOG(LogTemp, Warning, TEXT ("Character Interacted"));
 	}
@@ -79,6 +118,9 @@ void ATheHeroFrameworkCharacter::SetupPlayerInputComponent(UInputComponent* Play
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATheHeroFrameworkCharacter::Look);
+
+		// Interact
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ATheHeroFrameworkCharacter::PrimaryInteract);
 	}
 	else
 	{
