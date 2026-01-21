@@ -54,6 +54,16 @@ ATheHeroFrameworkCharacter::ATheHeroFrameworkCharacter()
 	AttributeComp = CreateDefaultSubobject<UAttributeComponent>(TEXT("AttributeComp"));
 }
 
+void ATheHeroFrameworkCharacter::Interact_Implementation(AActor* Instigator)
+{
+	if (AttributeComp)
+	{
+		AttributeComp->ApplyHealthChange(10.0f, Instigator);
+
+		UE_LOG(LogTemp, Warning, TEXT ("Character Interacted"));
+	}
+}
+
 void ATheHeroFrameworkCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	// Set up action bindings

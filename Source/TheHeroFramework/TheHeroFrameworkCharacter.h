@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
+#include "GameplayInterface.h"
 #include "TheHeroFrameworkCharacter.generated.h"
 
 class USpringArmComponent;
@@ -21,7 +22,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
  *  Implements a controllable orbiting camera
  */
 UCLASS(abstract)
-class ATheHeroFrameworkCharacter : public ACharacter
+class ATheHeroFrameworkCharacter : public ACharacter, public IGameplayInterface
 {
 	GENERATED_BODY()
 
@@ -58,6 +59,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UAttributeComponent* AttributeComp;
+
+	virtual void Interact_Implementation(AActor* Instigator) override;
 
 protected:
 
