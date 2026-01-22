@@ -46,16 +46,12 @@ void AInteractableActor::Interact_Implementation(AActor* ActorToInteractWith)
 	{
 		switch (EffectData->EffectType)
 		{
+			// Here I'm using switch case to only show that we can use power up to call different functions
+			// for instance, speed up, jump boost or health boost
 		case EEffectType::Health:
-			AttributeComp->ApplyHealthChange(EffectData->HealthDelta, ActorToInteractWith);
-			break;
-			
 		case EEffectType::Energy:
-			
-			break;
-
 		case EEffectType::Poison:
-
+			AttributeComp->ApplyHealthChange(EffectData->HealthDelta, ActorToInteractWith);
 			break;
 		}
 

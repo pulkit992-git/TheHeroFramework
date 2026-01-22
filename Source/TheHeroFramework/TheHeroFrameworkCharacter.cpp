@@ -14,6 +14,7 @@
 #include "AttributeComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "DrawDebugHelpers.h"
+#include "Blueprint/UserWidget.h"
 
 void ATheHeroFrameworkCharacter::PrimaryInteract()
 {
@@ -186,4 +187,18 @@ void ATheHeroFrameworkCharacter::DoJumpEnd()
 {
 	// signal the character to stop jumping
 	StopJumping();
+}
+
+void ATheHeroFrameworkCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (IsLocallyControlled() && PlayerHudClass)
+	{
+		ActiveHUD = CreateWidget<UUserWidget>(GetWorld(), PlayerHudClass);
+		if (ActiveHUD)
+		{
+			ActiveHUD->AddToViewport();
+		}
+	}
 }
